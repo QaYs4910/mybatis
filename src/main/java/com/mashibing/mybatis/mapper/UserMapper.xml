@@ -7,4 +7,20 @@
     <insert id="addUser" parameterType="com.mashibing.mybatis.pojo.User">
         insert into t_user(username,address,gender)values(#{username},#{address},#{gender})
     </insert>
+    
+    <update id="updateUser" parameterType="com.mashibing.mybatis.pojo.User">
+        update t_user set username=#{username},address=#{address},gender=#{gender} where id=#{id}
+    </update>
+
+    <delete id="deleteUser" parameterType="java.lang.Integer">
+        delete from t_user where id = #{id}
+    </delete>
+
+    <select id="allUser" resultType="com.mashibing.mybatis.pojo.User">
+        select * from t_user
+    </select>
+
+    <select id="queryById" parameterType="java.lang.Integer" resultType="com.mashibing.mybatis.pojo.User">
+        select * from t_user where id = #{id}
+    </select>
 </mapper>
