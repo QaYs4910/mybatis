@@ -1,4 +1,4 @@
-package com.mashibing.mybatis.pojo;
+package com.mashibing.mybatis.dao.pojo;
 
 public class User {
 

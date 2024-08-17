@@ -15,6 +15,6 @@
         </environment>
     </environments>
     <mappers>
-        <mapper resource="com/mashibing/mybatis/mapper/UserMapper.xml"/>
+        <mapper resource="com/mashibing/mybatis/dao/UserMapper.xml"/>
     </mappers>
 </configuration>

@@ -1,6 +1,8 @@
 package com.mashibing.mybatis;
 
-import com.mashibing.mybatis.pojo.User;
+import com.mashibing.mybatis.dao.IUserDao;
+import com.mashibing.mybatis.dao.pojo.User;
+import com.mashibing.mybatis.utils.DbUtils;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -10,6 +12,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 import java.util.List;
 
 @SpringBootTest
@@ -19,9 +24,7 @@ class MybatisApplicationTests {
     void contextLoads() throws IOException {
 
         //添加
-        InputStream in = Resources.getResourceAsStream("mybatis-cfg.xml");
-
-        SqlSessionFactory sessionFactory = new SqlSessionFactoryBuilder().build(in);
+        SqlSessionFactory sessionFactory = DbUtils.getInstance();
         SqlSession sqlSession = sessionFactory.openSession();
         User user = new User("张慧","湖州","女");
         int count = sqlSession.insert("com.mashibing.mybatis.pojo.User.addUser", user);
@@ -82,5 +85,29 @@ class MybatisApplicationTests {
         //mybatis默认不会进行数据的提交
         sqlSession.commit();
         sqlSession.close();
+    }
+
+    @Test
+    void test05(){
+        // 获取一个Dao接口的代理对象
+        IUserDao dao = (IUserDao) Proxy.newProxyInstance(IUserDao.class.getClassLoader()
+                , new Class[]{IUserDao.class}
+                , new InvocationHandler() {
+
+                    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+                        System.out.println(IUserDao.class.getName()+"." + method.getName());
+                        return DbUtils
+                                .getInstance()
+                                .openSession()
+                                .selectList(IUserDao.class.getName()+"." + method.getName(),args[0]);
+                    }
+                });
+
+        // dao.addUser(null);
+        //dao.updateUser(null);
+        List<User> list = dao.queryById(6);
+        for (User user : list) {
+            System.out.println(user);
+        }
     }
 }

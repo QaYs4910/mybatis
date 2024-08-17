@@ -2,13 +2,13 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.mashibing.mybatis.pojo.User">
+<mapper namespace="com.mashibing.mybatis.dao.IUserDao">
 
-    <insert id="addUser" parameterType="com.mashibing.mybatis.pojo.User">
+    <insert id="addUser" parameterType="com.mashibing.mybatis.dao.pojo.User">
         insert into t_user(username,address,gender)values(#{username},#{address},#{gender})
     </insert>
     
-    <update id="updateUser" parameterType="com.mashibing.mybatis.pojo.User">
+    <update id="updateUser" parameterType="com.mashibing.mybatis.dao.pojo.User">
         update t_user set username=#{username},address=#{address},gender=#{gender} where id=#{id}
     </update>
 
@@ -16,11 +16,11 @@
         delete from t_user where id = #{id}
     </delete>
 
-    <select id="allUser" resultType="com.mashibing.mybatis.pojo.User">
+    <select id="allUser" resultType="com.mashibing.mybatis.dao.pojo.User">
         select * from t_user
     </select>
 
-    <select id="queryById" parameterType="java.lang.Integer" resultType="com.mashibing.mybatis.pojo.User">
+    <select id="queryById" parameterType="java.lang.Integer" resultType="com.mashibing.mybatis.dao.pojo.User">
         select * from t_user where id = #{id}
     </select>
 </mapper>
